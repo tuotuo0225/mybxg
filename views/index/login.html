@@ -15,18 +15,18 @@
             <div class="avatar">
                 <img src="./uploads/monkey.png" class="img-circle" alt="">
             </div>
-            <form action="" class="col-xs-offset-1 col-xs-10">
+            <form id="loginForm" class="col-xs-offset-1 col-xs-10">
                 <div class="input-group input-group-lg">
                     <span class="input-group-addon">
                         <i class="fa fa-user"></i>
                     </span>
-                    <input type="text" class="form-control" placeholder="用户名">
+                    <input name='tc_name' type="text" class="form-control" placeholder="用户名">
                 </div>
                 <div class="input-group input-group-lg">
                     <span class="input-group-addon">
                         <i class="fa fa-key"></i>
                     </span>
-                    <input type="password" class="form-control" placeholder="密码">
+                    <input name='tc_pass' type="password" class="form-control" placeholder="密码">
                 </div>
                 <button type="submit" class="btn btn-lg btn-primary btn-block">登 录</button>
             </form>
@@ -34,6 +34,35 @@
     </div>
     
     <script src="/public/assets/jquery/jquery.min.js"></script>
+    <script src="/public/assets/jquery-cookie/jquery.cookie.js"></script>
     <script src="/public/assets/bootstrap/js/bootstrap.min.js"></script>
+    <script>
+        $("#loginForm").submit(function(){
+            //alert(123);
+            var formData=$(this).serialize();
+                console.log(formData);
+            $.ajax({
+                type:'post',
+                url:'/api/login',
+                data:formData,
+                dataType:'json',
+                success:function(data){
+                    console.log(data);
+                    if(data.code==200){
+                        console.log(data.result);
+                        //cookie 存的是字符串---将对象转换成字符串
+                        var logInfo=JSON.stringify(data.result);
+                        //设置cookie--设置到根目录
+                        $.cookie('logInfo',logInfo,{path:'/'});
+                        location.href='/index/index';
+                    }
+                },
+                error:function(data){
+                    console.log(data);
+                }
+            });
+        return false; //阻止表单提交默认行为
+        });
+    </script>
 </body>
 </html>
