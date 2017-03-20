@@ -31,33 +31,6 @@
     </div>
 
     <?php include('/views/common/script.html') ?>
-    <script>
-        $("#loginForm").submit(function(){
-            //alert(123);
-            var formData=$(this).serialize();
-                console.log(formData);
-            $.ajax({
-                type:'post',
-                url:'/api/login',
-                data:formData,
-                dataType:'json',
-                success:function(data){
-                    console.log(data);
-                    if(data.code==200){
-                        console.log(data.result);
-                        //cookie 存的是字符串---将对象转换成字符串
-                        var logInfo=JSON.stringify(data.result);
-                        //设置cookie--设置到根目录
-                        $.cookie('logInfo',logInfo,{path:'/'});
-                        location.href='/index/index';
-                    }
-                },
-                error:function(data){
-                    console.log(data);
-                }
-            });
-        return false; //阻止表单提交默认行为
-        });
-    </script>
+
 </body>
 </html>
